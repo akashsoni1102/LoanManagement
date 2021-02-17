@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService{
 		Optional<User> userOp=userRepository.findByUsername(user.getUsername());
 
 		if(!userOp.isEmpty() && userOp.get().getPassword().equals(user.getPassword())) {
-			
+				userOp.get().setPassword("");
 				return new ResponseEntity<>(userOp.get(),HttpStatus.OK);
 				
 		}
