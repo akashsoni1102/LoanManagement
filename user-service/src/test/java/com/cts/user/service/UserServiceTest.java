@@ -29,9 +29,9 @@ class UserServiceTest {
 
 	// User Not Found
 	@Test
-	void validateUserTestFail() {
+	void validateUserTestInvalidCred() {
 
-		User user = new User("Badal", "123", true);
+		User user = new User("admin", "123", true);
 		when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.empty());
 		try {
 			userService.validateUser(user);
@@ -41,10 +41,11 @@ class UserServiceTest {
 
 	}
 
+	//User Found with given credentials
 	@Test
-	void validateUserValidPasswordTest() {
+	void validateUserTestValidCred() {
 
-		User user = new User("Badal", "123", true);
+		User user = new User("admin", "123", true);
 
 		when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
 

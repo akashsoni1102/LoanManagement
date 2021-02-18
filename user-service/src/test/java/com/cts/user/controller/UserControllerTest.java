@@ -24,10 +24,11 @@ class UserControllerTest {
 	@Mock
 	UserServiceImpl userService;
 
+	//Valid Credentials
 	@Test
 	void validUserTest() {
 
-		User user = new User("Badal", "123", true);
+		User user = new User("admin", "123", true);
 		when(userService.validateUser(user)).thenReturn(new ResponseEntity<User>(user, HttpStatus.OK));
 
 		ResponseEntity<User> responseEntity = userController.login(user);
@@ -35,10 +36,11 @@ class UserControllerTest {
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 	}
 
+	//Invalid Credentials
 	@Test
 	void unauthorizedUserTest() {
 
-		User user = new User("Badal", "123", true);
+		User user = new User("admin", "123", true);
 		when(userService.validateUser(user)).thenReturn(new ResponseEntity<User>(user, HttpStatus.UNAUTHORIZED));
 
 		ResponseEntity<User> responseEntity = userController.login(user);
@@ -49,14 +51,12 @@ class UserControllerTest {
 	@Test
 	void invalidUserTest() {
 
-		User user = new User("Badal", "123", true);
+		User user = new User("admin", "123", true);
 		when(userService.validateUser(user)).thenThrow(new UserNotFoundException());
-
-		try {
-			userController.login(user);
-		} catch (Exception ex) {
-			assertThat(ex).isInstanceOf(UserNotFoundException.class);
-		}
+		
+		ResponseEntity<User> responseEntity = userController.login(user);
+		
+		assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
 
 	}
 
